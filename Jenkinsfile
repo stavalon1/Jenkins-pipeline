@@ -27,7 +27,6 @@ pipeline {
             }
             steps {
                 echo "running test"
-                echo "npm test"
             }
         }
            
@@ -42,14 +41,9 @@ pipeline {
         stage('deploy') {
            steps {
                 // start the app
-                echo "npm run start"
                 echo "Deploying success..."
         }
             }
-        }
-        
-       
-                
+        }          
 }
           
-  
