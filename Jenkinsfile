@@ -1,26 +1,48 @@
 pipeline {
     agent any
-
-    stages {
-        stage('Build') {
-
+    
+       stages {
+        stage('initws') {
             steps {
-                echo 'Building..'
+                // clean workspace before init
+                cleanWs()
             }
         }
-        stage('Test') {
+           stage('gitinit') {
             steps {
-                echo 'Testing..'
+                echo 'clone the repo from SCM'
+                git branch: 'main', url: 'https://github.com/Elad0109/simple-webapp-nodejs-.git'
             }
         }
-        stage('integrationTest') {
-            agent {
-                docker { image 'maven:3.8.1-adoptopenjdk-11' }
-            }
+           stage('build') {
             steps {
-                sh 'mvn --version'
-            }
-
+                // run build
+                nodejs('nodejs18') {
+                sh "npm install"
         }
+            }
+        }
+        
+        stage('testing') {
+            steps {
+                // run testing
+                nodejs('nodejs') {
+                sh "npm run test"
+                echo "Testing success..."
+        }
+            }
+        }
+        
+                stage('deploy') {
+            steps {
+                // start the app 
+                nodejs('nodejs18') {
+                sh "npm run start"
+                echo "Deploying success..."
+        }
+            }
+                }
+          
+        
+       }
     }
-}
