@@ -16,8 +16,8 @@ pipeline {
            stage('build') {
             steps {
                 // run build
-                nodejs('nodejs18') {
-                sh "npm install"
+                echo"npm start - run the application.."
+                
         }
             }
         }
@@ -27,8 +27,8 @@ pipeline {
                 docker { image 'sonar cube' }
             }
             steps {
-                sh 'running test'
-                sh 'npm test'
+                echo "running test"
+                echo "npm test"
             }
         }
            
@@ -42,9 +42,8 @@ pipeline {
         }
         stage('deploy') {
            steps {
-                // start the app 
-                nodejs('nodejs18') {
-                sh "npm run start"
+                // start the app
+                echo "npm run start"
                 echo "Deploying success..."
         }
             }
