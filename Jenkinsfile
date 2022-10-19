@@ -2,6 +2,7 @@ pipeline {
     agent any
     
        stages {
+           
         stage('initws') {
             steps {
                 // clean workspace before init
@@ -20,9 +21,7 @@ pipeline {
                 
         }
             }
-        }
-        
-        stage('testing') {
+            stage('testing') {
               agent {
                 docker { image 'sonar cube' }
             }
@@ -47,6 +46,9 @@ pipeline {
                 echo "Deploying success..."
         }
             }
+        }
+        
+       
                 
 }
           
