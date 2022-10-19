@@ -11,7 +11,6 @@ pipeline {
            stage('gitinit') {
             steps {
                 echo 'clone the repo from SCM'
-                git branch: 'main', url: 'https://github.com/Elad0109/simple-webapp-nodejs-.git'
             }
         }
            stage('build') {
@@ -24,17 +23,25 @@ pipeline {
         }
         
         stage('testing') {
+              agent {
+                docker { image 'sonar cube' }
+            }
             steps {
-                // run testing
-                nodejs('nodejs') {
-                sh "npm run test"
-                echo "Testing success..."
-        }
+                sh 'running test'
+                sh 'npm test'
             }
         }
-        
-                stage('deploy') {
+           
+        stage('integrationTest') {
+            agent {
+                docker { image 'maven:3.8.1-adoptopenjdk-11' }
+            }
             steps {
+                echo "check the server into aws"
+            }
+        }
+        stage('deploy') {
+           steps {
                 // start the app 
                 nodejs('nodejs18') {
                 sh "npm run start"
