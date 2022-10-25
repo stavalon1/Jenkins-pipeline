@@ -1,49 +1,63 @@
 pipeline {
     agent any
-    
-       stages {
-           
-        stage('initws') {
+
+    stages {
+        stage('Checkout From SCM') {
             steps {
-                // clean workspace before init
-                cleanWs()
+                echo 'Checkout from SCM..'
+                checkout ...
             }
         }
-           stage('gitinit') {
+        stage('Pre-build stg') {
             steps {
-                echo 'clone the repo from SCM'
+                echo 'prebuild actions..'
             }
         }
-           stage('build') {
+        stage('Build') {
             steps {
-                // run build
-                echo"npm start - run the application.."
-                
-        }
-            }
-            stage('testing') {
-              agent {
-                docker { image 'sonar cube' }
-            }
-            steps {
-                echo "running test"
+              sh 'docker build --target Build'
             }
         }
-           
-        stage('integrationTest') {
+        stage('Test') {
+            steps {
+                echo 'docker build --target test'
+            }
+        }
+        stage('security') {
+            agent {
+                docker { image 'alpine:latest' }
+            }
+            steps {
+                sh 'echo this is security'
+            }
+        }
+        stage('Back-end') {
             agent {
                 docker { image 'maven:3.8.1-adoptopenjdk-11' }
             }
             steps {
-                echo "check the server into aws"
+                sh 'mvn --version'
             }
         }
-        stage('deploy') {
-           steps {
-                // start the app
-                echo "Deploying success..."
-        }
+        stage('Front-end') {
+            agent {
+                docker { image 'node:16.13.1-alpine' }
             }
-        }          
+            steps {
+                sh 'node --version'
+            }
+        }
+        stage('Deploy') {
+            agent {
+                docker { image 'aws-cli:latest' }
+            }
+            steps {
+                sh 's3 cp src dst'
+            }
+        }
+      stage ('Post') {
+        echo "clear env"
+      }
+      
+    }
 }
-          
