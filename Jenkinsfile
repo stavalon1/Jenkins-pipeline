@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-              sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target build .'
+              sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target builder .'
             }
         }
         stage('Test') {
@@ -19,17 +19,17 @@ pipeline {
         }
         stage('Security') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target security .'
+                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target security-test .'
             }
         }
         stage('Back-end') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target back-end .'
+                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target backend .'
             }
         }
         stage('Front-end') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target front-end .'
+                sh 'DOCKER_BUILDKIT=1 docker build -t stav:latest --target frontend .'
             }
         }
         stage('Deploy') {
