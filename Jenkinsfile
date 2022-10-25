@@ -32,25 +32,18 @@ pipeline {
             }
         }
         stage('Back-end') {
-            agent {
-                docker { image 'maven:3.8.1-adoptopenjdk-11' }
-            }
             steps {
                 sh 'mvn --version'
             }
         }
         stage('Front-end') {
-            agent {
-                docker { image 'node:16.13.1-alpine' }
-            }
+         
             steps {
                 sh 'node --version'
             }
         }
         stage('Deploy') {
-            agent {
-                docker { image 'aws-cli:latest' }
-            }
+        
             steps {
                 sh 's3 cp src dst'
             }
