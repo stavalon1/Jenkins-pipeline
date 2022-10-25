@@ -24,28 +24,25 @@ pipeline {
             }
         }
         stage('security') {
-            agent {
-                docker { image 'alpine:latest' }
-            }
             steps {
                 sh 'echo this is security'
             }
         }
         stage('Back-end') {
             steps {
-                sh 'mvn --version'
+                echo 'mvn --version'
             }
         }
         stage('Front-end') {
          
             steps {
-                sh 'node --version'
+                echo 'node --version'
             }
         }
         stage('Deploy') {
         
             steps {
-                sh 's3 cp src dst'
+                echo 's3 cp src dst'
             }
         }
        stage ('Post') {
