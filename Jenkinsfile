@@ -19,22 +19,22 @@ pipeline {
         }
         stage('Security') {
             steps {
-                sh 'echo "docker build --target security""'
+                sh 'echo "This is security"'
             }
         }
         stage('Back-end') {
             steps {
-                sh 'echo "docker build --target backend""'
+                sh 'echo "mvn --version"'
             }
         }
         stage('Front-end') {
             steps {
-                sh 'docker build --target Front-end'
+                sh 'echo "node --version"'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'echo "docker build --target deploy"'
+                sh 'echo "s3 cp src dst"'
             }
         }
         stage('Post') {
