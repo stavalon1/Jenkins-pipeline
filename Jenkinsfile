@@ -2,54 +2,45 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout From SCM') {
-            steps {
-                echo 'Checkout from SCM..'
-                //checkout ...
-            }
-        }
         stage('Pre-build stg') {
             steps {
-                echo 'prebuild actions..'
+                echo 'Prebuild actions..'
             }
         }
         stage('Build') {
             steps {
-              echo 'docker build --target Build'
+              sh 'echo "docker build --target Build"'
             }
         }
         stage('Test') {
             steps {
-                echo 'docker build --target test'
+                sh 'echo "docker build --target test"'
             }
         }
-        stage('security') {
+        stage('Security') {
             steps {
-                sh 'echo this is security'
+                sh 'echo "docker build --target security""'
             }
         }
         stage('Back-end') {
             steps {
-                echo 'mvn --version'
+                sh 'echo "docker build --target backend""'
             }
         }
         stage('Front-end') {
-         
             steps {
-                echo 'node --version'
+                sh 'docker build --target Front-end'
             }
         }
         stage('Deploy') {
-        
             steps {
-                echo 's3 cp src dst'
+                sh 'echo "docker build --target deploy"'
             }
         }
-       stage ('Post') {
-           steps{
-        echo "clear env"
-           }
-      }
-      
+        stage('Post') {
+            steps {
+                echo "Clear env"
+            }
+        }
     }
 }
